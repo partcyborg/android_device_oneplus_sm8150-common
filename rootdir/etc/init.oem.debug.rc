@@ -73,6 +73,12 @@ on property:sys.oem.dtest=1
 
 on property:sys.oem.dtest=0
     stop dtest
+
+on property:sys.selinux=permissive
+    exec - -- /system/bin/setenforce 0
+
+on property:sys.selinux=enforcing
+    exec - -- /system/bin/setenforce 1
  
 service dtest /system/bin/sh /system/xbin/dtest.sh
     oneshot
