@@ -213,7 +213,9 @@ PRODUCT_PACKAGES += \
     libtinyxml \
     libvulkan \
     vendor.display.config@1.7 \
-    vendor.display.config@1.7.vendor
+    vendor.display.config@1.7.vendor \
+    libqdutils \
+    libqservice
 
 # Doze
 PRODUCT_PACKAGES += \
