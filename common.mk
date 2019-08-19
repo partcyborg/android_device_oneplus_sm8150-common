@@ -217,7 +217,9 @@ PRODUCT_PACKAGES += \
     libvulkan \
     memtrack.msmnile \
     vendor.display.config@1.7 \
-    vendor.qti.hardware.display.allocator@1.0-service
+    vendor.qti.hardware.display.allocator@1.0-service \
+    libqdutils \
+    libqservice 
 
 # Doze
 PRODUCT_PACKAGES += \
