@@ -20,8 +20,12 @@ PRODUCT_COPY_FILES += \
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-lineage \
+    $(LOCAL_PATH)/overlay-lineage
 
+PRODUCT_ENFORCE_RRO_TARGETS := \
+    framework-res
+
+# A/B
 AB_OTA_UPDATER := true
 
 AB_OTA_PARTITIONS += \
@@ -29,7 +33,7 @@ AB_OTA_PARTITIONS += \
     dtbo \
     system \
     vendor \
-    vbmeta \
+    vbmeta
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -377,8 +381,7 @@ PRODUCT_PACKAGES += \
 
 # Vibrator
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service
+    android.hardware.vibrator@1.2-service.oneplus_msmnile
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
@@ -456,7 +459,6 @@ PRODUCT_COPY_FILES += \
 
 # WiFi Display
 PRODUCT_PACKAGES += \
-    libaacwrapper \
     libnl
 
 PRODUCT_BOOT_JARS += \
