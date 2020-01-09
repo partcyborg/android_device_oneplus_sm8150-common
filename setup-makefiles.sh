@@ -17,10 +17,6 @@
 
 set -e
 
-DEVICE_COMMON=sm8150-common
-VENDOR=oneplus
-INITIAL_COPYRIGHT_YEAR=2019
-
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
@@ -38,7 +34,7 @@ source "${HELPER}"
 setup_vendor "${DEVICE_COMMON}" "${VENDOR}" "${LINEAGE_ROOT}" true
 
 # Copyright headers and guards
-write_headers "guacamole guacamoleb guacamoleg"
+write_headers "guacamole guacamoleb guacamoleg hotdog hotdogb"
 
 # The standard common blobs
 write_makefiles "${MY_DIR}/proprietary-files.txt" true
@@ -46,3 +42,17 @@ write_makefiles "${MY_DIR}/proprietary-files.txt" true
 # Finish
 write_footers
 
+if [ -s "${MY_DIR}/../${DEVICE}/proprietary-files.txt" ]; then
+    # Reinitialize the helper for device
+    INITIAL_COPYRIGHT_YEAR="$DEVICE_BRINGUP_YEAR"
+    setup_vendor "${DEVICE}" "${VENDOR}" "${LINEAGE_ROOT}" false
+
+    # Copyright headers and guards
+    write_headers
+
+    # The standard device blobs
+    write_makefiles "${MY_DIR}/../${DEVICE}/proprietary-files.txt" true
+
+    # Finish
+    write_footers
+fi

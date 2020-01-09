@@ -22,6 +22,7 @@
 #include <fstream>
 
 #define FINGERPRINT_ACQUIRED_VENDOR 6
+#define FINGERPRINT_ERROR_VENDOR 8
 
 #define OP_ENABLE_FP_LONGPRESS 3
 #define OP_DISABLE_FP_LONGPRESS 4
@@ -83,7 +84,9 @@ Return<void> FingerprintInscreen::onFinishEnroll() {
 Return<void> FingerprintInscreen::onPress() {
     this->mVendorDisplayService->setMode(OP_DISPLAY_AOD_MODE, 2);
     this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 1);
+#if FOD_HBM
     set(HBM_ENABLE_PATH, 1);
+#endif
     this->mVendorDisplayService->setMode(OP_DISPLAY_NOTIFY_PRESS, 1);
 
     return Void();
@@ -92,7 +95,9 @@ Return<void> FingerprintInscreen::onPress() {
 Return<void> FingerprintInscreen::onRelease() {
     this->mVendorDisplayService->setMode(OP_DISPLAY_AOD_MODE, 0);
     this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 0);
+#if FOD_HBM
     set(HBM_ENABLE_PATH, 0);
+#endif
     this->mVendorDisplayService->setMode(OP_DISPLAY_NOTIFY_PRESS, 0);
 
     return Void();
@@ -105,7 +110,9 @@ Return<void> FingerprintInscreen::onShowFODView() {
 Return<void> FingerprintInscreen::onHideFODView() {
     this->mVendorDisplayService->setMode(OP_DISPLAY_AOD_MODE, 0);
     this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 0);
+#if FOD_HBM
     set(HBM_ENABLE_PATH, 0);
+#endif
     this->mVendorDisplayService->setMode(OP_DISPLAY_NOTIFY_PRESS, 0);
 
     return Void();
@@ -138,8 +145,8 @@ Return<bool> FingerprintInscreen::handleAcquired(int32_t acquiredInfo, int32_t v
     return false;
 }
 
-Return<bool> FingerprintInscreen::handleError(int32_t, int32_t) {
-    return false;
+Return<bool> FingerprintInscreen::handleError(int32_t error, int32_t vendorCode) {
+    return error == FINGERPRINT_ERROR_VENDOR && vendorCode == 6;
 }
 
 Return<void> FingerprintInscreen::setLongPressEnabled(bool enabled) {
@@ -150,14 +157,19 @@ Return<void> FingerprintInscreen::setLongPressEnabled(bool enabled) {
 }
 
 Return<int32_t> FingerprintInscreen::getDimAmount(int32_t) {
+#if FOD_HBM
     int dimAmount = get(DIM_AMOUNT_PATH, 0);
+#else
+    int dimAmount = 0;
+#endif
+
     LOG(INFO) << "dimAmount = " << dimAmount;
 
     return dimAmount;
 }
 
 Return<bool> FingerprintInscreen::shouldBoostBrightness() {
-    return false;
+    return !FOD_HBM;
 }
 
 Return<void> FingerprintInscreen::setCallback(const sp<IFingerprintInscreenCallback>& callback) {
