@@ -235,12 +235,12 @@ PRODUCT_PACKAGES += \
     memtrack.msmnile \
     vendor.display.config@1.7 \
     libqdutils \
-    libqservice 
+    libqservice \
     vendor.qti.hardware.display.allocator-service \
     vendor.qti.hardware.display.allocator@1.0-service \
     vendor.qti.hardware.display.allocator@1.0.vendor \
-    vendor.qti.hardware.display.mapper@1.0.vendor
-    vendor.display.config@1.7.vendor \
+    vendor.qti.hardware.display.mapper@1.0.vendor \
+    vendor.display.config@1.7.vendor 
 
 # Doze
 PRODUCT_PACKAGES += \
